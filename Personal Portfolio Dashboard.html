@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Portfolio Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            min-height: calc(100vh - 40px);
+        }
+
+        .sidebar {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+
+        .stats {
+            width: 100%;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            gap: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .welcome-text {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            opacity: 0.8;
+            font-size: 16px;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            color: white;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(31, 38, 135, 0.5);
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .icon {
+            width: 24px;
+            height: 24px;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .project-item, .skill-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .project-item:hover, .skill-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .project-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .project-desc {
+            font-size: 14px;
+            opacity: 0.8;
+        }
+
+        .skill-bar {
+            background: rgba(255, 255, 255, 0.2);
+            height: 8px;
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+            border-radius: 4px;
+            transition: width 2s ease;
+        }
+
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 20px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .social-link {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: white;
+            transition: transform 0.3s ease, background 0.3s ease;
+        }
+
+        .social-link:hover {
+            transform: scale(1.1);
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .welcome-text {
+                font-size: 24px;
+            }
+        }
+
+        .typing {
+            overflow: hidden;
+            border-right: 2px solid #4ecdc4;
+            white-space: nowrap;
+            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink-caret {
+            from, to { border-color: transparent }
+            50% { border-color: #4ecdc4 }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <div class="profile-img">👨‍💻</div>
+            <h2 class="name">Your Name</h2>
+            <p class="title">Frontend Developer</p>
+            
+            <div class="stats">
+                <div class="stat-item">
+                    <span>Projects</span>
+                    <span id="projectCount">12</span>
+                </div>
+                <div class="stat-item">
+                    <span>Experience</span>
+                    <span>2+ Years</span>
+                </div>
+                <div class="stat-item">
+                    <span>Skills</span>
+                    <span>15+</span>
+                </div>
+                <div class="stat-item">
+                    <span>GitHub Commits</span>
+                    <span id="commitCount">847</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <h1 class="welcome-text typing">Welcome to My Portfolio Dashboard</h1>
+                <p class="subtitle">Building amazing web experiences with modern technologies</p>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="icon">🚀</span>
+                        Recent Projects
+                    </h3>
+                    <div class="project-item">
+                        <div class="project-name">E-Commerce Platform</div>
+                        <div class="project-desc">React.js • Node.js • MongoDB</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-name">Weather Dashboard</div>
+                        <div class="project-desc">Vue.js • Chart.js • API Integration</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-name">Task Manager</div>
+                        <div class="project-desc">JavaScript • Firebase • Real-time</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="icon">💻</span>
+                        Technical Skills
+                    </h3>
+                    <div class="skill-item">
+                        <div>JavaScript</div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 90%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div>React.js</div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 85%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div>CSS/SCSS</div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 88%"></div>
+                        </div>
+                    </div>
+                    <div class="skill-item">
+                        <div>Node.js</div>
+                        <div class="skill-bar">
+                            <div class="skill-progress" style="width: 75%"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="icon">📊</span>
+                        Activity Stats
+                    </h3>
+                    <canvas id="activityChart" width="250" height="150"></canvas>
+                </div>
+
+                <div class="card">
+                    <h3 class="card-title">
+                        <span class="icon">🎯</span>
+                        Current Goals
+                    </h3>
+                    <div class="project-item">
+                        <div class="project-name">Master TypeScript</div>
+                        <div class="project-desc">Progress: 70% Complete</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-name">Build Mobile App</div>
+                        <div class="project-desc">React Native • In Planning</div>
+                    </div>
+                    <div class="project-item">
+                        <div class="project-name">Contribute to Open Source</div>
+                        <div class="project-desc">5 PRs this month</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer">
+                <p>Let's build something amazing together!</p>
+                <div class="social-links">
+                    <a href="#" class="social-link">📧</a>
+                    <a href="#" class="social-link">💼</a>
+                    <a href="#" class="social-link">🐙</a>
+                    <a href="#" class="social-link">🐦</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple chart drawing
+        const canvas = document.getElementById('activityChart');
+        const ctx = canvas.getContext('2d');
+        
+        // Generate sample data
+        const data = [];
+        for (let i = 0; i < 7; i++) {
+            data.push(Math.random() * 100 + 50);
+        }
+        
+        // Draw chart
+        function drawChart() {
+            const padding = 20;
+            const chartWidth = canvas.width - 2 * padding;
+            const chartHeight = canvas.height - 2 * padding;
+            const barWidth = chartWidth / data.length;
+            
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Create gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+            gradient.addColorStop(0, '#ff6b6b');
+            gradient.addColorStop(1, '#4ecdc4');
+            
+            data.forEach((value, index) => {
+                const barHeight = (value / 150) * chartHeight;
+                const x = padding + index * barWidth + 5;
+                const y = canvas.height - padding - barHeight;
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(x, y, barWidth - 10, barHeight);
+            });
+        }
+        
+        // Animation counters
+        function animateCounters() {
+            const projectCounter = document.getElementById('projectCount');
+            const commitCounter = document.getElementById('commitCount');
+            
+            animateValue(projectCounter, 0, 12, 2000);
+            animateValue(commitCounter, 0, 847, 3000);
+        }
+        
+        function animateValue(element, start, end, duration) {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                element.innerHTML = Math.floor(progress * (end - start) + start);
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        }
+        
+        // Initialize everything
+        window.addEventListener('load', () => {
+            drawChart();
+            animateCounters();
+            
+            // Animate skill bars
+            setTimeout(() => {
+                const skillBars = document.querySelectorAll('.skill-progress');
+                skillBars.forEach(bar => {
+                    bar.style.width = bar.style.width;
+                });
+            }, 1000);
+        });
+        
+        // Add some interactivity
+        document.querySelectorAll('.card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'translateY(-5px)';
+                }, 100);
+            });
+        });
+        
+        // Update activity chart periodically
+        setInterval(() => {
+            for (let i = 0; i < data.length; i++) {
+                data[i] = Math.random() * 100 + 50;
+            }
+            drawChart();
+        }, 5000);
+    </script>
+</body>
+</html>
